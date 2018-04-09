@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.chongieball.daggerdemo.R;
 import com.example.chongieball.daggerdemo.data.network.response.movie.MoviesWraper;
 import com.example.chongieball.daggerdemo.feature.listing.sorting.SortingFragment;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class MovieListingFragment extends Fragment implements MovieListingView {
     @Inject
     MovieListingPresenter presenter;
 
-    @BindView(R.id.movies_listing)
-    RecyclerView moviesListing;
+    @BindView(R.id.movies_listing) RecyclerView moviesListing;
+    @BindView(R.id.shimmer_placeholder) ShimmerFrameLayout shimmerPlaceHolder;
 
     private RecyclerView.Adapter adapter;
     private List<MoviesWraper> moviesWraperList = new ArrayList<>(20);
@@ -122,11 +123,15 @@ public class MovieListingFragment extends Fragment implements MovieListingView {
 
     @Override
     public void loadingFailed(String errorMessage) {
+        shimmerPlaceHolder.stopShimmerAnimation();
+        shimmerPlaceHolder.setVisibility(View.GONE);
         Snackbar.make(moviesListing, errorMessage, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override
     public void loadingStarted() {
+        shimmerPlaceHolder.startShimmerAnimation();
+        shimmerPlaceHolder.setVisibility(View.VISIBLE);
         Snackbar.make(moviesListing, "Loading Movies", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -137,6 +142,8 @@ public class MovieListingFragment extends Fragment implements MovieListingView {
 
     @Override
     public void showMovies(List<MoviesWraper> movies) {
+        shimmerPlaceHolder.stopShimmerAnimation();
+        shimmerPlaceHolder.setVisibility(View.GONE);
         this.moviesWraperList.clear();
         this.moviesWraperList.addAll(movies);
         moviesListing.setVisibility(View.VISIBLE);

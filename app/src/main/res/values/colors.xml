@@ -7,4 +7,5 @@
     <color name="black_translucent_60">#99000000</color>
 
     <color name="window_background">#282828</color>
+    <color name="background">#dddddd</color>
 </resources>

@@ -39,6 +39,7 @@ ext {
 
     //view component
     glideVersion = '4.2.0'
+    shimmerVersion = '0.1.0@aar'
 
     //helper
     butterknifeVersion = '8.5.1'
